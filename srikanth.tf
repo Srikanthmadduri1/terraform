@@ -2,8 +2,8 @@ terraform {
   required_version = ">=0.12"
 }
 provider "aws" {
-  access_key = "AKIAZPIIRQKEXTFJ3AC6"
-  secret_key = "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"
+  access_key = ".  "
+  secret_key = ".  "
   region = "us-east-1"
 }
 resource "aws_vpc" "srikanth" {
