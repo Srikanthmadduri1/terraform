@@ -4,12 +4,12 @@ terraform {
 provider "aws" {
   access_key = ".  "
   secret_key = ".  "
-  region = "us-east-1"
+  region     = "us-east-1"
 }
 resource "aws_vpc" "srikanth" {
-    cidr_block ="10.0.0.0/16"
+    cidr_block           ="10.0.0.0/16"
     enable_dns_hostnames = true
-    enable_dns_support = true
+    enable_dns_support   = true
     tags = {
       "name" = "srikanth"
     }
@@ -18,25 +18,25 @@ resource "aws_internet_gateway" "srikanth-igw" {
     vpc_id = aws_vpc.srikanth.id
 }
 resource "aws_route" "srikanth-route" {
-    route_table_id = aws_vpc.srikanth.main_route_table_id
+    route_table_id         = aws_vpc.srikanth.main_route_table_id
     destination_cidr_block = "0.0.0.0/0"
     gateway_id             = aws_internet_gateway.srikanth-igw.id
 
   
 }
 resource "aws_subnet" "public-subnet-1" {
-    cidr_block = "10.0.1.0/24"
-    availability_zone = "us-east-1a"
-    vpc_id = aws_vpc.srikanth.id
+    cidr_block              = "10.0.1.0/24"
+    availability_zone       = "us-east-1a"
+    vpc_id                  = aws_vpc.srikanth.id
     map_public_ip_on_launch = true
     tags = {
       "public-subnet-1" = "public-subnet-1"
     }
 }
 resource "aws_subnet" "private-subnet-2" {
-    cidr_block = "10.0.2.0/24"
-    availability_zone = "us-east-1a"
-    vpc_id = aws_vpc.srikanth.id
+    cidr_block              = "10.0.2.0/24"
+    availability_zone       = "us-east-1a"
+    vpc_id                  = aws_vpc.srikanth.id
     map_public_ip_on_launch = false
     tags = {
       "private-subnet-2" = "private-subnet-2"
@@ -44,18 +44,18 @@ resource "aws_subnet" "private-subnet-2" {
 
 }
 resource "aws_subnet" "public-subnet-3" {
-    cidr_block = "10.0.3.0/24"
-    availability_zone = "us-east-1b"
-    vpc_id = aws_vpc.srikanth.id
+    cidr_block              = "10.0.3.0/24"
+    availability_zone       = "us-east-1b"
+    vpc_id                  = aws_vpc.srikanth.id
     map_public_ip_on_launch = true
     tags = {
       "public-subnet-3" = "public-subnet-3"
     }
 }
 resource "aws_subnet" "private-subnet-4" {
-    cidr_block = "10.0.4.0/24"
-    availability_zone = "us-east-1b"
-    vpc_id = aws_vpc.srikanth.id
+    cidr_block              = "10.0.4.0/24"
+    availability_zone       = "us-east-1b"
+    vpc_id                  =  aws_vpc.srikanth.id
     map_public_ip_on_launch = false
     tags = {
       "private-subnet-4" = "private-subnet-4"
@@ -128,15 +128,16 @@ resource "aws_instance" "srikanth-instance" {
       user = "ami-05fa00d4c63e32376"
       host = self.public_ip
     }
-    instance_type = "t2.micro"
-    ami = var.aws_amis[var.aws_region]
-    key_name = aws_key_pair.auth.id
+    instance_type          = "t2.micro"
+    ami                    = var.aws_amis[var.aws_region]
+    key_name               = aws_key_pair.auth.id
     vpc_security_group_ids = [ aws_security_group.srikanth-security-ssh.id]
-    subnet_id = aws_subnet.public-subnet-1.id
+    subnet_id              = aws_subnet.public-subnet-1.id
 
 }
+#key pair
 resource "aws_key_pair" "auth" {
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCUneEEFNId/sI76At+U4ImJ6yUjxGfRRlBvoDGulRtLogN4BDTPmiaYCAsbdNpgpdLGKXcqpNUfw9QApMmDMyqyPwsa++XxX7yVpGK23uo5QNaEmY9g6NT2ejP09SQaahKcIvsGJCF3wmM3ra0H6/jQo0hVjJ7iZIwEVMUIo1FHWMn0xibmGYnEvWIffjK/UzWvShkLVcSD3mdBBglreqLHGS3W736sMEQk+eolGQReNpN+lkvjHTz4xdncvF49CaA2so1aKv4Ribcs6I2PeBLH6fA4vyjJWdSvTAqGereRe4Kp7Li5S/ndAOb09TOnfbuhkdiSkQ/UtSYQK+CWVT7 rsa-key-20220920"
+  public_key = ""
 }
 resource "aws_instance" "srikanth-instance-1" {
     connection {
@@ -144,11 +145,11 @@ resource "aws_instance" "srikanth-instance-1" {
       user = "ami-05fa00d4c63e32376"
       host = self.public_ip
     }
-    instance_type = "t2.micro"
-    ami = var.aws_amis[var.aws_region]
-    key_name = aws_key_pair.auth.id
-    vpc_security_group_ids = [ aws_security_group.srikanth-security-ssh.id]
-    subnet_id = aws_subnet.private-subnet-2.id
+    instance_type           = "t2.micro"
+    ami                     = var.aws_amis[var.aws_region]
+    key_name                = aws_key_pair.auth.id
+    vpc_security_group_ids  = [ aws_security_group.srikanth-security-ssh.id]
+    subnet_id               = aws_subnet.private-subnet-2.id
 }
 resource "aws_instance" "srikanth-instance-2" {
     connection {
@@ -157,8 +158,8 @@ resource "aws_instance" "srikanth-instance-2" {
       host = self.public_ip
     }
     instance_type = "t2.micro"
-    ami = var.aws_amis[var.aws_region]
-    key_name = aws_key_pair.auth.id
-    vpc_security_group_ids = [ aws_security_group.srikanth-security-ssh.id]
-    subnet_id = aws_subnet.public-subnet-3.id
+    ami                     = var.aws_amis[var.aws_region]
+    key_name                = aws_key_pair.auth.id
+    vpc_security_group_ids  = [ aws_security_group.srikanth-security-ssh.id]
+    subnet_id               = aws_subnet.public-subnet-3.id
 }
